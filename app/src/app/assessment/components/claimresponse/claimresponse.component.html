@@ -1,0 +1,67 @@
+<form [formGroup]="questionForm"
+      class="row w-100 align-items-stretch">
+    <div class="col-lg-6 col-12 d-flex align-items-center pl-3">
+        {{ text }}
+    </div>
+    <div class="col-lg-6 col-12 d-flex align-items-center justify-content-end">
+        <div class="btn-group btn-group-toggle mt-2"
+             ngbRadioGroup
+             formControlName="claimResponseType">
+            <label class="small btn btn-outline-dark rounded-0 border-2 mx-1 text-center p-0 d-flex align-items-center justify-content-center"
+                   style="width:3rem; height:3rem;"
+                   ngbButtonLabel>
+                <input ngbButton
+                       [value]="1"
+                       type="radio"
+                       ngbButton> {{ 'OPTION_NO' | translate }}
+            </label>
+            <label class="btn btn-outline-dark rounded-0 border-2 mx-1 p-0 d-flex align-items-center justify-content-center"
+                   style="width:3rem; height:3rem;"
+                   ngbButtonLabel>
+                <input ngbButton
+                       [value]="3"
+                       type="radio"> {{ 'OPTION_NA' | translate }}
+            </label>
+            <label class="btn btn-outline-dark rounded-0 border-2 mx-1 p-0 d-flex align-items-center justify-content-center"
+                   style="width:3rem; height:3rem;"
+                   ngbButtonLabel>
+                <input ngbButton
+                       (click)="t.open()"
+                       [value]="2"
+                       type="radio"> {{ 'OPTION_YES' | translate }}
+            </label>
+        </div>
+
+
+        <div style="width:3rem;"
+             class="custom-slider d-flex align-items-center justify-content-center">
+            <div #t="ngbTooltip"
+                 trigger="manual"
+                 container="body"
+                 placement="top"
+                 [ngbTooltip]="'QUESTION_HOW_SATISFIED' | translate">
+                <ng5-slider *ngIf="+claimResponseTypeControl.value === claimResponseTypeEnum.Yes"
+                            (userChangeEnd)="satisfactionLevelChanged($event)"
+                            [value]="satisfactionLevel"
+                            style="height:80px;"
+                            [options]="verticalSlider5.options">
+                </ng5-slider>
+            </div>
+            <div *ngIf="+claimResponseTypeControl.value === claimResponseTypeEnum.NA"
+                 class="w-100"
+                 style="width:4px; height:80px;"
+                 class="indicator-na"></div>
+            <div *ngIf="+claimResponseTypeControl.value === claimResponseTypeEnum.No"
+                 class="w-100"
+                 style="width:4px; height:80px;"
+                 class="indicator-no"></div>
+                 <div *ngIf="+claimResponseTypeControl.value === claimResponseTypeEnum.Empty"
+                 class="w-100"
+                 style="width:4px; height:80px;"
+                 class="indicator-nofill"></div>
+        </div>
+
+    </div>
+
+
+</form>

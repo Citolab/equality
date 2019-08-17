@@ -1,0 +1,32 @@
+// Overwrite Bootstrap's variables here
+// You can find them in node_modules/bootstrap/scss/_variables.scss
+// Copy the variables you need into this file, don't modify files under node_modules/
+
+$font-size-base:    0.9rem !default; // Assumes the browser default, typically `16px`
+$small-font-size:   80%;
+
+// Enables predefined border-radius styles on various components.
+$enable-rounded:    true;
+
+// $enable-transitions: true;
+$gray-100: #f8f9fa !default;
+$gray-800: #343a40 !default;
+// Changing the theme colors
+$primary:          #acb8bd !default;
+// $secondary:     $gray-600 !default;
+// $success:       $green !default;
+// $info:          $cyan !default;
+// $warning:       $yellow !default;
+// $danger:        $red !default;
+$light:            $gray-100 !default;
+$dark:             $gray-800 !default;
+
+$body-color:        $dark;
+$grid-gutter-width: 0;
+$enable-transitions: true;
+$lead-font-size:    18px;
+$card-border-width: 0;
+
+$component-active-bg: lighten($primary, 40%);
+$component-active-color: darken($primary, 20%);
+

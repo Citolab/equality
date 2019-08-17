@@ -1,0 +1,106 @@
+<ng-container *ngIf="phaseSelected$ | async">
+    <div *ngFor="let stage of selectedPhase?.stages; trackBy:trackSelectionsByStage"
+         class="bushalte row align-items-stretch border-left border-3 border-dark pb-2">
+        <div class="col-4 bg-white">
+            <div class="p-3 bg-primary text-dark font-weight-bold">{{stage.title}}</div>
+            <div class="p-3">
+                <button (click)="openStage(phaseDetails, stage)"
+                        class="btn btn-block btn-outline-dark border-2 mb-3">mijn onderbouwing</button>
+                <div class="d-flex">
+                    <div *ngIf="stage.evidenceFiles && stage.evidenceFiles.length > 0">
+                        <a class="d-block mr-3 text-truncate cursor-pointer"
+                           fileSaver
+                           [method]="'GET'"
+                           [fileName]="stage.evidenceFiles[0].filename"
+                           [url]="stage.evidenceFiles[0].url">
+                            <app-filetype-icon ngbTooltip="{{stage.evidenceFiles[0].filename}}"
+                                               [filename]="stage.evidenceFiles[0].filename">
+                            </app-filetype-icon>
+                        </a>
+                    </div>
+                    <div class="cursor-pointer"
+                         *ngIf="stage.evidenceText">
+                        <app-filetype-icon ngbPopover="{{stage.evidenceText}}"
+                                           [filename]="'dummy.txt'">
+                        </app-filetype-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-8 d-flex bg-white flex-column border-left border-light"
+             *ngIf="(selectedClaim$ | async) as selectedClaim">
+            <app-claim-response class="d-flex p-2 w-100 border-top border-light h-100"
+                                *ngFor="let claim of stage.claimResponses; trackBy:trackSelectionsByClaim"
+                                [text]="claim.claimTitle"
+                                [claimResponseType]="claim.response"
+                                [class.zoom]="selectedClaim.claimId === claim.id"
+                                [satisfactionLevel]="claim.satisfactionLevel"
+                                (changed)="claimChanged($event, claim.id)">
+            </app-claim-response>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #phaseDetails
+             let-modal>
+    <ng-container *ngIf="stageSelected$ | async">
+        <div class="modal-header">
+            <h5 class="modal-title"
+                id="modal-basic-title"> {{ selectedStage.title }}</h5>
+            <button type="button"
+                    class="close text-light"
+                    aria-label="Close"
+                    (click)="modal.close()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Upload een document of onderbouw in het tekstvak</p>
+            <div>
+                <div class="mb-3 d-flex justify-content-between"
+                     *ngIf="selectedStage.evidenceFiles && selectedStage.evidenceFiles.length > 0">
+                    <a class="d-block text-truncate cursor-pointer"
+                       fileSaver
+                       [method]="'GET'"
+                       [fileName]="selectedStage.evidenceFiles[0].filename"
+                       [url]="selectedStage.evidenceFiles[0].url">
+                        <app-filetype-icon ngbTooltip="{{selectedStage.evidenceFiles[0].filename}}"
+                                           [filename]="selectedStage.evidenceFiles[0].filename">
+                        </app-filetype-icon>
+                        {{ selectedStage.evidenceFiles[0].filename }}
+                    </a>
+                    <button data-toggle="tooltip"
+                            title="Verwijder document"
+                            (click)="removeFile(selectedStage.evidenceFiles[0].id, selectedStage.sequenceNumber)"
+                            class="eq-delete btn btn-outline-dark mdi mdi-delete mr-2"></button>
+                </div>
+                <div *ngIf="!(selectedStage.evidenceFiles && selectedStage.evidenceFiles.length > 0)"
+                     class="custom-file mb-3">
+                    <label class="custom-file-label"
+                           for="customFile">{{ selectedStage.evidenceDescription }}</label>
+
+                    <input type="file"
+                           class="custom-file-input"
+                           value="test"
+                           (change)="upload($event, selectedStage.sequenceNumber)"
+                           accept=".png,.jpg,.doc,.docx,.pdf, .xlsx, .xls" />
+                </div>
+                <div *ngIf="isUploading$ | async"
+                     class="border border-1 rounded border-secondary m-2 p-1 eq-file cursor-pointer d-flex align-items-center justify-content-between">
+                    <progress max="100"
+                              style="width: 100%"
+                              [value]="uploadProgress$ | async"></progress>
+                </div>
+            </div>
+            <div>
+                <app-textarea-form (changed)="saveEvidenceText($event, selectedStage.sequenceNumber)" [text]="selectedStage.evidenceText">
+                </app-textarea-form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button"
+                    class="btn btn-outline-dark"
+                    (click)="modal.close()">{{ 'BUTTON_CLOSE' | translate }}</button>
+        </div>
+    </ng-container>
+</ng-template>

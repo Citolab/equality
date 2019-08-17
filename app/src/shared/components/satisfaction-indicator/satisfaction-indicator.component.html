@@ -1,0 +1,10 @@
+
+
+
+<div class="indicator d-flex justify-content-end flex-column" [ngClass]="getClassName()">
+    <div 
+        class="w-100 bg-primary" 
+        style="transition: all 0.8s ease-out" 
+        [style.height.%]="(this.value === claimResponseType.Yes) ? (s | async) * 33 : 0"
+        ></div>
+</div>

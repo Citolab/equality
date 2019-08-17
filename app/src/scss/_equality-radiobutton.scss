@@ -1,0 +1,65 @@
+//  https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_radio
+/* The eq-radiochoice */
+.eq-radiochoice {
+    // display: block;
+    position: relative;
+    // padding-left: 35px;
+    // margin-bottom: 12px;
+    cursor: pointer;
+    // font-size: 22px;
+    // -webkit-user-select: none;
+    // -moz-user-select: none;
+    // -ms-user-select: none;
+    // user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.eq-radiochoice input {
+    // position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Create a custom radio button */
+.eq-radiobutton {
+    // position: absolute;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    border: 2px solid $secondary;
+    // background-color: #eee;
+    border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.eq-radiochoice:hover input ~ .eq-radiobutton {
+    background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.eq-radiochoice input:checked ~ .eq-radiobutton {
+    background-color: white;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.eq-radiobutton:after {
+    content: "";
+    // position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.eq-radiochoice input:checked ~ .eq-radiobutton:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.eq-radiochoice .eq-radiobutton:after {
+ 	margin-top: 3px;
+	margin-left: 3px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: $primary;
+}

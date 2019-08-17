@@ -1,0 +1,13 @@
+.eq-parenthover {
+    color: $secondary;
+    .eq-hovered {
+        visibility: hidden
+    }
+}
+
+.eq-parenthover:hover {
+    color: $dark;
+    .eq-hovered {
+        visibility: visible
+    }
+}
