@@ -1,9 +1,9 @@
 # Equality
  
-Equality is created by Citolab and University of Utrecht.
-It's build to have insights in the quality of assessments.
+Equality is a web application was developed by Citolab in cooperation with the University of Utrecht.
+Its main purpose is to gain insights in the quality of a course's assessment program.
 
-<a href="https://equality-opensource.firebaseapp.com/">view the example here </a>
+<a href="https://equality-opensource.firebaseapp.com/">view the example here</a>
 - username: test1@test.com
 - password: secretpassword
 
