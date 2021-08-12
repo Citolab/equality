@@ -3,7 +3,7 @@
 Equality is a web application was developed by Citolab in cooperation with the University of Utrecht.
 Its main purpose is to gain insights in the quality of a course's assessment program.
 
-<a href="https://equality-opensource.firebaseapp.com/">Click here</a> for more information (in Dutch).
+<a href="https://www.cito.nl/kennis-en-innovatie/prototypes/projecten/equality/">Click here</a> for more information (in Dutch).
 <a href="mailto:citolab@cito.nl?subject=More info about Equality">or send an email</a>
 
 <a href="https://equality-opensource.firebaseapp.com/">view the example here</a>
