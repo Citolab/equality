@@ -1,0 +1,43 @@
+<div class="bushalte row align-items-stretch pb-2">
+
+    <div class="pb-1 text-secondary">Wat zijn de toetstechnische data?</div>
+
+  <!-- <div class="p-2 bg-primary text-dark font-weight-bold px-3">Wat zijn de toetstechnische data?</div> -->
+
+  <div class="col-12 d-flex bg-white flex-column border-left border-light"
+       *ngIf="!!data">
+    <form [formGroup]="assessmentDataForm">
+      <table class="table table-sm table-striped table-borderless m-5"
+             style="width:300px">
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>N.v.t.</th>
+        </tr>
+        <tr *ngFor="let f of fields">
+          <td><span [class.text-secondary]="assessmentDataForm.get(f.id).disabled">{{ f.title }}</span></td>
+          <td><input style="width:80px"
+                   [ngClass]="{'border-red': getFieldError(f.id, f.title)}"
+                   [ngbTooltip]="getFieldError(f.id, f.title)"
+                   class="form-control"
+                   [formControlName]="f.id"
+                   [min]="f.minValue"
+                   [max]="f.maxValue"
+                   [pattern]="f.pattern"/></td>
+          <td><span [class.text-secondary]="assessmentDataForm.get(f.id).disabled">{{ f.sign }}</span></td>
+          <td>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox"
+                     [formControlName]="f.id + '-applicable'">
+            </div>
+
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div class="col-12 d-flex justify-content-end mt-3">
+    <equality-fake-save-button *ngIf="!readonlyMode"></equality-fake-save-button>
+  </div>
+</div>

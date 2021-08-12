@@ -1,0 +1,49 @@
+// Overwrite Bootstrap's variables here
+// You can find them in node_modules/bootstrap/scss/_variables.scss
+// Copy the variables you need into this file, don't modify files under node_modules/
+$white:    #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black:    #000 !default;
+
+$theme-colors: ("white": $white);
+$font-size-base: 0.9rem !default; // Assumes the browser default, typically `16px`
+$small-font-size: 80%;
+
+// Enables predefined border-radius styles on various components.
+$enable-rounded: true;
+
+// $enable-transitions: true;
+// $enable-responsive-font-sizes: true;
+// Changing the theme colors
+$primary: #a8dadc !default;
+$secondary: #457b9d;
+$info: cyan !default;
+// $warning:       $yellow !default;
+// $danger:        $red !default;
+$light:  $gray-100 !default; 
+$dark: $gray-800 !default; 
+$grid-gutter-width: 0;
+$enable-transitions: true;
+$lead-font-size: 18px;
+$card-border-width: 0;
+
+$component-active-bg: lighten($primary, 40%);
+$component-active-color: darken($primary, 20%);
+
+// $nav-tabs-border-color: $dark;
+$nav-tabs-border-width: 0px;
+// $nav-tabs-border-radius:         0;
+// $nav-tabs-link-hover-border-color: $dark;
+// $nav-tabs-link-active-color: white;
+$nav-tabs-link-active-bg: $dark;
+// $nav-tabs-link-active-border-color: $dark;
+
+$active: $primary // lighten($primary,40);

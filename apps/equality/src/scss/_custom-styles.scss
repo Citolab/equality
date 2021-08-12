@@ -1,0 +1,43 @@
+.lead {
+    font-family: 'Merriweather', serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Merriweather', serif;
+
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.hide {
+    color: transparent;
+}
+
+/* Streepje onder nav-link. margin compenseert voor de padding ruimte tussen de tekst en het streepje */
+.navbar-light .navbar-nav .active > .nav-link {
+    padding: 0.1rem 0rem;
+    margin: 0.4rem;
+    border-bottom: 2px solid $dark;
+}
+
+.progress-bar {
+    background-color: darken($light, 10%);
+}
+
+.progress-bar-striped {
+    background-color: darken($light, 10%)!important; 
+}
+
+.popoverstellingen {
+    width:20%;
+    max-width: 20%;
+}
+
+.blur-background {
+    transition: none !important;
+    background-color: $dark;
+}

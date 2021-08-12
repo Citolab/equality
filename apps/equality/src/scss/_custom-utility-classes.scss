@@ -1,0 +1,95 @@
+// Add additional styles here. For example, overwrite certain styles or add new components.
+// Tip: You can use bootstrap's powerful mixins here!
+.border {
+    &.border-dotted {
+        border-style: dotted !important;
+    }
+    &.border-dashed {
+        border-style: dashed !important;
+    }
+}
+
+// https://github.com/twbs/bootstrap/issues/26803
+.flex-even {
+    flex: 1;
+}
+
+.overflow-scroll {
+    overflow: scroll;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.cursor-default {
+    cursor: default;
+}
+
+.text-underline {
+    text-decoration: underline !important;
+}
+
+$background: $white;
+$border: #dfdfdf;
+
+.btn-filter {
+  @include button-variant($background, $border, $hover-background: darken($background, 7.5%), $hover-border: darken($border, 10%), $active-background: $active, $active-border: darken($border, 12.5%));
+  color: #798091;
+}
+
+// Generate some border width utility classes
+$class: border-;
+@for $i from 1 through 5 {
+    .#{$class}#{$i} {
+        border-width: $i+px !important;
+    }
+}
+
+// Extra hover btn classes
+@each $color,
+$value in $theme-colors {
+    .hover\:btn-#{$color}:hover {
+        background-color: $value;
+    }
+}
+
+// Extra hover btn-outline classes
+@each $color,
+$value in $theme-colors {
+    .hover\:btn-outline-#{$color}:hover {
+        background-color: $value;
+    }
+}
+
+// Extra hover background classes hover:
+@each $color,
+$value in $theme-colors {
+    .hover\:bg-#{$color}:hover {
+        background-color: $value;
+    }
+}
+
+
+
+// .hover\:text-underline:hover {
+//     @include text-underline;
+// }
+
+// @each $color,
+// $value in $theme-colors {
+//     .parenthover {
+//         color: $value;
+//         .eq-hovered {
+//             visibility: hidden
+//         }
+//     }
+//     .hover\:button-outline-#{$color}:hover {
+//         background-color: $value;
+//     }
+// }
+

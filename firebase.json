@@ -1,0 +1,28 @@
+{
+  "functions": {
+    "predeploy": [
+      "nx build functions"
+    ],
+    "source": "dist/apps/functions"
+  },
+  "hosting": [
+    {
+      "target": "equality-opensource",
+      "public": "dist/apps/equality",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "predeploy": [
+        "nx build equality --prod"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}

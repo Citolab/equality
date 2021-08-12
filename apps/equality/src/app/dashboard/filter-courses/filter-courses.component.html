@@ -1,0 +1,39 @@
+<div class="row mt-3"
+     *ngIf="yearsWithCourses && courses">
+  <div class="col-12 col-md-4 pr-5"
+       *ngFor="let year of yearsWithCourses.years | sort:'year'; let i=index; trackBy:trackByYear">
+    <div class="d-flex align-items-center justify-content-start">
+
+      <div class="cursor-pointer mb-2" 
+        (click)="selectYear(i + 1,!allSelected(i + 1))"
+        [class.font-weight-bold]="!nothingSelected(i + 1)"
+        >Year {{year.year}}</div>
+      <!-- <div class="custom-control custom-checkbox ml-3"> -->
+      <label class="switch ml-3">
+        <input type="checkbox"
+               [checked]="allSelected(i + 1)"
+               (change)="selectYear(i + 1,!allSelected(i + 1))">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="cursussen d-flex">
+      <div class="d-flex flex-column flex-even"
+           *ngFor="let block of year.blocks; trackBy:trackByBlock">
+        <label class="btn cursor-pointer py-1 px-0 mr-1 mb-1 rounded text-nowrap"
+               ngbButtonLabel
+               [class.font-weight-bold]="course.selected"
+               [class.text-secondary]="!course.selected"
+               [class.shadow-sm]="course.selected"
+               [style.background-color]="course.selected ? '#ffffff' : 'rgba(255, 255, 255, 0.5)'"
+               ngbTooltip="{{ course.title }}"
+               *ngFor="let course of block.courses; trackBy:trackByCourse">
+          <input type="checkbox"
+                 (click)="selectCursus(course)"
+                 [ngModel]="course.selected"
+                 class="d-none"
+                 ngbButton> {{ course.code | abbrev }}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

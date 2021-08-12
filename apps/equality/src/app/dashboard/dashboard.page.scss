@@ -1,0 +1,19 @@
+.sticky-nav {
+    position: sticky;
+    top: 0px;
+    background: #ffffff !important;
+    z-index: 10;
+    // box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    box-shadow: 0 0.250rem 1rem rgba(0, 0, 0, 0.175) !important;
+    // bottom: 0;
+    transition: all 1s;
+}
+
+
+.filters {
+    visibility: hidden;
+}
+
+.sticky-nav > .filters {
+    visibility: visible;
+}

@@ -1,0 +1,42 @@
+<ng-container *ngIf="loaded$ | async">
+    <div class='container ml-0'>
+        <div class="row p-2">
+            <div class="col-2">
+                <a class="btn bg-primary p-2 mdi mdi-chevron-left"
+                   routerLink="../../">Back</a>
+            </div>
+            <div class="col-10 d-flex align-items-center">
+                <h3 class="m-0 p-0 text-lowercase">
+                    {{courseData.assessmentTitle}}
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <div style="border-bottom:2px solid #000000"></div>
+
+    <div class='container ml-0 mt-3'>
+        <div class="row">
+            <div class="col-2">
+                <div class='position-absolute'>
+                    <div class="p-3 mr-4 cursor-pointer w-100 font-weight-bold"
+                         [routerLink]="'./phase/' + phase"
+                         routerLinkActive="bg-dark text-white border-left border-dark border-3"
+                         *ngFor="let phase of courseData.phases">
+                        <div>{{ phase }}</div>
+                    </div>
+                    <div class="p-3 mr-4 cursor-pointer w-100 font-weight-bold"
+                         [routerLink]="'./toetsdata'"
+                         routerLinkActive="bg-dark text-white border-left border-dark border-3"
+                         [ngClass]="{'bg-dark text-white border-left border-dark border-3': courseData.selectedAssessmentMenuTitle === 'toetsdata'}">
+                        <div>Assessment data</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-10 offset-2">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+
+</ng-container>

@@ -1,0 +1,241 @@
+<div class='container px-3 pt-4 pb-4'>
+
+    <div class="d-flex">
+        <h3 class="p-0 m-0">{{ user?.programs[0].title }}</h3>
+        <a *ngIf="readonlyMode"
+       class="mt-n2 btn btn-primary ml-3 mdi mdi-open-in-new"
+       [routerLink]="['/dashboard/' + userService.storedDashboardTab]">To course</a>
+    </div>
+</div>
+<nav class="border-bottom border-2 border-dark">
+    
+    <div class="nav nav-tabs"
+         id="nav-tab"
+         role="tablist">
+        <div class='container'>
+            <div *ngIf="!readonlyMode"
+                 class='container-fluid d-flex mt-3 px-3'>
+                <a *ngFor="let userCourse of user?.courses; let i = index"
+                   class="nav-item nav-link text-secondary"
+                   id="nav-home-tab"
+                   [routerLink]="'/course/' + userCourse.code"
+                   routerLinkActive="active text-light"
+                   data-toggle="tab"
+                   role="tab"
+                   aria-controls="nav-home"
+                   aria-selected="true">{{ userCourse.title }}</a>
+            </div>
+            <div *ngIf="readonlyMode"
+                 class='container-fluid d-flex mt-3 px-3'>
+                <a class="nav-item nav-link text-light active"
+                   id="nav-home-tab"
+                   data-toggle="tab"
+                   role="tab"
+                   aria-controls="nav-home"
+                   aria-selected="true">{{ courseData?.title }}</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div *ngIf="loaded$ | async">
+
+
+    <div class='container p-3'>
+
+
+        <!-- <div class="row mt-4">
+            <div class="col-12 mb-1">
+                
+                <span class="text-secondary">Jou evaluatie van het proces voor het maken van je toetsen</span>
+            </div>
+        </div> -->
+        <h3 class="mb-0 mt-3">Assessments</h3>
+        <div class="row px-3">
+            <div class="col-lg-2">
+
+            </div>
+            <div class="col-3 col-lg-2 mb-2 d-flex justify-content-center"
+                 *ngFor="let phase of courseData?.assessmentsWithUserData[0].phaseResponses; let i = index; trackBy:trackSelectionsByassessmentPhases">
+                <a class="cursor-pointer border-bottom border-secondary border-1 pb-1 mb-2"
+                   placement="bottom"
+                   (click)="selectedEmptyStatePhase = phase;"
+                   popoverClass="shadow"
+                   [ngbPopover]="popContent">
+                    {{ phase.title }}
+                </a>
+            </div>
+            <div class="col-3 col-lg-2 mb-2 d-flex justify-content-center">
+                <a class="cursor-pointer border-bottom border-secondary border-1 pb-1 mb-2"
+                   placement="bottom"
+                   popoverClass="shadow"
+                   [ngbPopover]="popContentToets">
+                    Assessment data
+                </a>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
+        <div class="row bg-white p-3 mb-1 align-items-center"
+             *ngFor="let assessment of courseData.assessmentsWithUserData;let i = index; trackBy:trackSelectionsByassessmentPhases">
+
+            <div class="col-12 col-lg-2 text-nowrap d-flex align-items-center">
+                <div [ngbTooltip]="assessment.title"
+                     class=" text-lowercase text-truncate">{{ assessment.title }}</div>
+            </div>
+
+            <div class="col-3 col-lg-2 d-flex align-items-start justify-content-center py-3 py-lg-0"
+                 *ngFor="let phase of assessment.phaseResponses; let i = index; trackBy:trackSelectionsByassessmentPhases">
+                <equality-satisfaction-indicator class="mr-2 cursor-pointer"
+                                            placement="top"
+                                            (click)="navigateToAssessment(assessment.id, phase.title, +response.code )"
+                                            [ngbTooltip]="response.title"
+                                            *ngFor="let response of getResponses(phase); trackBy: trackSelectionsByResponse"
+                                            [value]="response.responseType"
+                                            [satisfactionLevel]="response.satisfactionLevel">
+                </equality-satisfaction-indicator>
+
+                <div (click)="navigateToAssessment(assessment.id, phase.title)"
+                     [class.text-light]="!phase.selfEvalEvidenceText"
+                     [class.text-dark]="phase.selfEvalEvidenceText"
+                     style="margin-top: -8px;"
+                     class="cursor-pointer mdi mdi-24px mdi-message-text"></div>
+
+            </div>
+
+            <div class="col-3 col-lg-2 d-flex justify-content-center">
+                <span [routerLink]="['assessment', assessment.id, 'toetsdata']"
+                      [class.text-dark]="isComplete(assessment.deliveryData)"
+                      [class.text-light]="!isComplete(assessment.deliveryData)"
+                      class="mdi mdi-24px mdi-check-circle  cursor-pointer"></span>
+            </div>
+
+            <div class="col-12 col-lg-2 d-lg-flex justify-content-end align-items-center">
+                <button title="Fill in the self evaluation"
+                        (click)="navigateToAssessment(assessment.id, courseData.assessmentsWithUserData[0].phaseResponses[0].title)"
+                        [class.btn-primary]="!readonlyMode"
+                        [class.btn-secondary]="readonlyMode"
+                        class="btn text-nowrap">Self Evaluation<span class="mdi mdi-chevron-right"></span></button>
+            </div>
+
+
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 mb-1">
+                <h3 class="mb-0">Documents</h3>
+                <!-- <span class="text-secondary">Upload je documenten voor het samenstellen van toetsen</span> -->
+            </div>
+        </div>
+        <div class="d-lg-flex justify-content-between align-items-stretch">
+
+            <!-- https://css-tricks.com/flexbox-truncated-text/ -->
+            <div style="min-width: 0"
+                 class="filebox d-flex mr-3 flex-column w-100"
+                 *ngFor="let evidence of courseData.evidenceDocuments">
+                <div class="text-secondary text-truncate pb-1">{{ evidence.type }}</div>
+                <div class="card flex-grow-1">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <button *ngIf="!readonlyMode"
+                                    [disabled]="evidence.processing"
+                                    class="btn btn-secondary btn-block d-flex justify-content-center"
+                                    (click)="fileUpload.click();">
+                                <span [class.d-none]="!evidence.processing"
+                                      class="mdi mdi-loading mdi-spin mr-2"></span>
+                                <span [class.d-none]="evidence.processing"
+                                      class="mdi mdi-plus mr-2"></span>
+
+                                Upload</button>
+                            <input #fileUpload
+                                   [hidden]="true"
+                                   type="file"
+                                   multiple
+                                   (change)="upload($event, evidence.type)" />
+                        </div>
+
+                        <div ngbDropdown
+                             placement="bottom-right"
+                             *ngFor="let evidenceFile of evidence.documents">
+                            <div class="cursor-pointer d-flex align-items-center mt-2"
+                                 ngbDropdownToggle>
+                                <equality-filetype-icon class="mr-2"
+                                                   [filename]="evidenceFile.filename">
+                                </equality-filetype-icon>
+                                <div class="text-nowrap text-truncate">{{ evidenceFile.filename }}</div>
+                            </div>
+                            <div ngbDropdownMenu>
+                                <div class="px-4 text-secondary small">{{ evidenceFile.filename }}</div>
+                                <button class="mdi mdi-download"
+                                        fileSaver
+                                        [method]="'GET'"
+                                        [fileName]="evidenceFile.filename"
+                                        [url]="evidenceFile.filepath"
+                                        (change)="upload($event, '1')"
+                                        [url]="evidenceFile.url"
+                                        ngbDropdownItem>Download</button>
+                                <button class="text-danger mdi mdi-trash-can-outline"
+                                        *ngIf="!readonlyMode"
+                                        (click)="removeFile(evidenceFile.id, evidence.type)"
+                                        ngbDropdownItem>Verwijder</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 mb-1">
+                <h3 class="mb-2">Action plan</h3>
+                <!-- <span class="text-secondary">Hoe ging het vorig jaar en wat ga je dit jaar doen?</span> -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 d-flex bg-white flex-column border-left border-light p-3">
+                <span class="text-secondary">Last years evaluation and actions</span>
+                <equality-textarea-form [disabled]="true"
+                                   [text]="'n.v.t.'"
+                                   (changed)="saveActiepuntenLastYear($event)"></equality-textarea-form>
+            </div>
+            <div class="col-12 d-flex bg-white flex-column border-left border-light p-3">
+                <span class="text-secondary">Next years actions</span>
+                <equality-textarea-form [disabled]="readonlyMode"
+                                   [text]="courseData.actieplanDitJaar"
+                                   (changed)="saveActiepuntenNextYear($event)"></equality-textarea-form>
+            </div>
+
+            <div class="col-12 d-flex bg-white justify-content-end p-3">
+                <equality-fake-save-button *ngIf="!readonlyMode">
+
+                </equality-fake-save-button>
+
+            </div>
+        </div>
+    </div>
+
+    <ng-template #popContent>
+        <div class="card h-100 px-1 pt-3">
+            <img class="card-img-top mb-3"
+                 src="../../assets/onboarding/{{ selectedEmptyStatePhase.title }}.svg"
+                 alt="Card image cap">
+            <div class="card-body p-1">
+                <p class="card-text">{{ selectedEmptyStatePhase.description }}</p>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #popContentToets>
+        <div class="card h-100 px-1 pt-3">
+            <img class="card-img-top mb-3"
+                 src="../../assets/onboarding/Ontwerpen.svg"
+                 alt="Card image cap">
+            <div class="card-body p-1">
+                <p class="card-text">Assessment data will be added here.</p>
+            </div>
+        </div>
+    </ng-template>

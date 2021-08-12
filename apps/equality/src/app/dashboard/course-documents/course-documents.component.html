@@ -1,0 +1,64 @@
+<ng-container *ngIf="loaded$ | async">
+  <div class='container-fluid p-0 p-sm-3 bg-white'>
+    <div class="row justify-content-between align-items-center">
+      <div class="text-secondary font-italic">Wich documents are uploaded for a course?</div>
+      <div class="d-flex text-secondary align-items-center font-weight-bold">standard<span
+              class="ml-1 mdi mdi-24px mdi-numeric-3-circle-outline"></span></div>
+    </div>
+  </div>
+
+  <div class='container-fluid p-0 p-sm-3'>
+    <div *ngFor="let courseYear of yearsWithCourseDocumentCoverages | sort:'year'; let i = index; trackBy:trackByYear">
+      <div class="d-flex align-items-center"
+           style="height:40px;">
+        <div style="min-width:140px; width:140px;"
+             class="text-nowrap">
+          <h3>Year {{ courseYear.year }}</h3>
+        </div>
+      </div>
+
+
+      <table class="table table-small table-bordered w-100">
+        <!-- <caption style="caption-side: top;"></caption> -->
+        <thead>
+          <tr>
+            <th style="max-width:140px; min-width:140px; width:140px;"></th>
+            <th class="font-weight-normal"
+                *ngFor="let docType of documentTypes"
+                scope="col">{{ docType }}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let course of courseYear.courses;index as i; trackBy: trackByCourse">
+            <th scope="row"
+                class="px-0"
+                style="max-width:140px; min-width:140px; width:140px;">
+
+                <equality-course-link [courseRoute]="course.code"
+                [courseName]="course.code | abbrev"
+                [readOnly]="!userService.isExamencommissie"
+                (clickCourse)="null">
+</equality-course-link>
+
+            </th>
+            <td *ngFor="let documentCoverage of course.documentCoverages"
+                [style.background-color]="!(documentCoverage.documents.length > 0) ? 'rgba(255, 255, 255, 0.5)' : '#ffffff'">
+              <a class="mr-1 text-truncate cursor-pointer"
+                 *ngFor="let document of documentCoverage.documents; trackBy: trackByFile"
+                 fileSaver
+                 [method]="'GET'"
+                 [fileName]="document.filename"
+                 [url]="document.filepath">
+                <equality-filetype-icon class="mr-1"
+                                   [ngbTooltip]="document.filename"
+                                   [filename]="document.filename">
+                </equality-filetype-icon>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-container>

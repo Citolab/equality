@@ -1,0 +1,24 @@
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+td {
+    width: 16.66666666%;
+}
+
+
+td {
+    background-color: white;
+}
+
+.table-bordered th, .table-bordered td 
+{
+    border-color: #efefef !important;
+    border:2px solid
+}
+
+.table td {
+    padding: 0.5rem;
+}
+

@@ -1,0 +1,199 @@
+<ng-container *ngIf="loaded$ | async">
+  <div class='container-fluid p-0 p-sm-3 bg-white'>
+    <div class="row justify-content-between align-items-center">
+      <div class="d-flex align-items-center justify-content-between">
+        <span *ngIf="isEindtermen"
+              class="text-secondary font-italic d-flex">When will which endterm be tested?</span>
+        <span *ngIf="!isEindtermen"
+              class="text-secondary font-italic d-flex mdi">When is what assessment format used?</span>
+      </div>
+
+      <div class="d-flex text-secondary align-items-center font-weight-bold">standard<span
+              class="ml-1 mdi mdi-24px mdi-numeric-4-circle-outline"></span></div>
+    </div>
+  </div>
+
+  <!-- [style.background-color]="assessmentType.selected ? assessmentType.color: '#ffffff'" -->
+  <!-- <label [class]="'btn btn-filter text-nowrap mdi' + ' ' + assessmentType.icon + ' rounded-pill p-1 px-3 m-1'" -->
+
+  <div class='container-fluid p-0 p-sm-3'>
+
+    <div *ngFor="let courseYear of coursesInYears; let i = index; trackBy: trackByCourseYear">
+
+      <div class="d-flex align-items-center"
+           style="height:40px;">
+        <div style="min-width:140px; width:140px;"
+             class="text-nowrap">
+          <h3>Year {{ courseYear.year }}</h3>
+        </div>
+        <div *ngIf="i === 0 && !isEindtermen"
+             style="min-width: 0"
+             class="d-flex flex-nowrap align-items-center">
+          <label class="switch mr-3"
+                 *ngIf="!isEindtermen">
+            <input type="checkbox"
+                   [checked]="allSelected()"
+                   (change)="select(!allSelected())">
+            <span class="slider round"></span>
+          </label>
+          <label [class]="'mr-1 cursor-pointer text-truncate btn btn-link rounded-pill text-nowrap mdi' + ' ' + assessmentType.icon"
+                 ngbButtonLabel
+                 [ngbTooltip]="assessmentType.title"
+                 [style.color]="assessmentType.selected ? '#001240' : '#616b7e'"
+                 [style.background-color]="assessmentType.selected ? '#ffffff' : 'transparent'"
+                 *ngFor="let assessmentType of assessmentTypes; let i = index;">
+            <input type="checkbox"
+                   (click)="selectAssessmentType(assessmentType)"
+                   [ngModel]="assessmentType.selected"
+                   class="d-none"
+                   ngbButton>
+            {{ assessmentType.shorttitle }}
+          </label>
+        </div>
+      </div>
+
+      <table class="table table-sm table-borderless w-100">
+        <thead>
+          <tr>
+            <th style="width:140px"></th>
+            <th class="font-weight-normal text-secondary"
+                *ngFor="let category of endTermInCategory; trackBy: trackByCategory"
+                scope="col">{{ category.category }}</th>
+            <th></th>
+
+          </tr>
+          <tr *ngIf="i === 0"
+              style="height:40px;">
+            <th class="font-weight-normal">
+              <span class="text-nowrap font-italic text-secondary"
+                    *ngIf="isEindtermen">x deliveries</span>
+              <span class="text-nowrap font-italic text-secondary"
+                    *ngIf="!isEindtermen">x different forms</span>
+
+            </th>
+            <th *ngFor="let category of endTermInCategory; trackBy: trackByCategory"
+                scope="col">
+
+              <div class="d-flex align-items-end"
+                   *ngIf="isEindtermen">
+                <div *ngFor="let endTerm of category.endTerms; trackBy: trackByEndterm"
+                     [class.bg-dark]="endTerm.covered"
+                     [style.height.rem]="endTerm.total / 6"
+                     [ngbTooltip]="endTerm.total > 0 ? endTerm.total.toString() : ''"
+                     class="square p-0 border-bottom border-secondary border-1">
+                  <!-- {{ endTerm.total > 0 ? endTerm.total : ''}} -->
+                </div>
+              </div>
+
+            </th>
+
+
+            <!-- <th scope="col"></th> -->
+            <th scope="col">
+              <div class="d-flex align-items-end"
+                   *ngIf="!isEindtermen">
+                <div *ngFor="let assessmentType of assessmentTypes; trackBy: trackByAssessmentType"
+                     [class.bg-dark]="assessmentType.covered"
+                     [class.d-none]="!assessmentType.selected"
+                     [style.height.rem]="assessmentType.total / 6"
+                     [ngbTooltip]="assessmentType.total > 0 ? assessmentType.total.toString() : ''"
+                     class="square p-0 border-bottom border-secondary border-1">
+                  <!-- {{ assessmentType.total }} -->
+                </div>
+              </div>
+            </th>
+
+          </tr>
+          <tr class="mb-5"
+              *ngIf="i === 0">
+            <td scope="row">
+
+            </td>
+            <td *ngFor="let category of endTermInCategory; trackBy: trackByCategory"
+                scope="col"
+                style="vertical-align: bottom">
+              <div class="d-flex">
+                <div class="rounded-circle square font-weight-normal text-secondary"
+                     [ngbTooltip]="endTerm.title"
+                     [class.bg-primary]="isEindtermen && endTerm.covered"
+                     [class.bg-white]="isEindtermen && !endTerm.covered"
+                     *ngFor="let endTerm of category.endTerms; trackBy: trackByEndterm">
+                  {{ endTerm.code | slice:1:3 }}
+                </div>
+              </div>
+            </td>
+            <!-- Totalen -->
+            <td>
+              <div class="d-flex"
+                   style="vertical-align: bottom">
+                <div [class]="'rounded-circle bg-white square mdi' + ' ' + assessmentType.icon"
+                     [class.invisible]="isEindtermen"
+                     [class.d-none]="!assessmentType.selected"
+                     [class.bg-primary]="!isEindtermen && assessmentType.covered"
+                     [class.bg-white]="!isEindtermen && !assessmentType.covered"
+                     *ngFor="let assessmentType of assessmentTypes; let i = index;">
+                </div>
+              </div>
+
+            </td>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let course of courseYear.courses; trackBy: trackByCursus">
+
+            <th scope="row"
+                class="text-nowrap eq-parenthover">
+              <equality-course-link [courseRoute]="course.code"
+                               [courseName]="course.code | abbrev"
+                               [readOnly]="!userService.isExamencommissie"
+                               (clickCourse)="null">
+              </equality-course-link>
+            </th>
+            <td *ngFor="let category of course.categories"
+                scope="col">
+              <div class="d-flex">
+                <div *ngFor="let endTerm of category.endTerms; trackBy: trackByEndterm"
+                     class="square text-secondary"
+                     [style.background-color]="(endTerm.assessmentForms && endTerm.assessmentForms.length > 0 && endTerm.assessmentForms.length > 1) ? assessmentTypesIcon.get(endTerm.assessmentForms[0])?.color : endTerm.covered ? '#c0c9da' : '#ffffff'"
+                     [ngbTooltip]="!isEindtermen && endTerm.covered && endTerm.assessmentForms.length > 0 && tipContent"
+                     container="body"
+                     (mouseenter)="setCurrentForms(endTerm.assessmentForms)">
+                  <div *ngIf="!isEindtermen && endTerm.assessmentForms.length > 0"
+                       [class]="'mdi '  +  ((endTerm.assessmentForms.length === 1) ? assessmentTypesIcon.get(endTerm.assessmentForms[0])?.icon : 'mdi-plus mdi-24px text-secondary')">
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex">
+                <div class="text-secondary square"
+                     [class.invisible]="isEindtermen"
+                     [class.d-none]="!assessmentTypes[i].selected"
+                     [style.background-color]="assessmentType > 0 ? '#c0c9da' : '#ffffff'"
+                     *ngFor="let assessmentType of course.assessmentFormCoverage; let i = index;">
+                  {{ assessmentType === 0 ? '' : assessmentType }}
+                </div>
+              </div>
+              <div class="d-flex">
+                <div style="width: 1.6rem; margin-right:1px"
+                     *ngFor="let assessmentType of course.assessmentFormCoverage;"></div>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #tipContent>
+  <div class="d-flex"
+       *ngFor="let assessmentForm of assessmentTooltipTypes">
+    <div [class]="'mr-1 mdi' + ' ' +  assessmentTypesIcon.get(assessmentForm)?.icon">&nbsp;
+      {{assessmentTypesIcon.get(assessmentForm).description}}
+    </div>
+  </div>
+</ng-template>

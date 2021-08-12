@@ -1,0 +1,81 @@
+<div class='container-fluid px-3 pt-4 pb-4'>
+
+  <div class="d-flex">
+    <h3 class="">{{ program?.title }}</h3>
+    <!-- [attr.data-badge]="program?.documents ? program?.documents.length : 0" -->
+    <a class="ml-3 mt-n2 btn btn-dark text-white badge-notification rounded-pill ml-auto" 
+       (click)="openVisionDocuments()">Our vision <span class="badge badge-primary rounded-circle" style="width:1rem; height:1rem;">{{ program?.documents ? program?.documents.length : 0 }}</span></a>
+  </div>
+</div>
+
+<div class='container-fluid px-3'>
+
+  <div *ngIf="(loaded$ | async) && (programLoaded$ | async)">
+    <equality-filter-courses [courses]="courses"
+                        (filterChanged)="filterChanged($event)"></equality-filter-courses>
+  </div>
+
+</div>
+
+<nav *ngIf="loaded$ | async"
+equalityScrollPoint
+     [scrollPoint]="nav.offsetTop"
+     #nav
+     class="bg-light w-100 border-bottom border-2 border-dark">
+  <!-- <a class="filters mdi mdi-filter-variant position-absolute ml-auto btn btn-primary p-2 m-2"
+    style="right:0;">Filters</a> -->
+  <div ngbDropdown
+       placement="bottom-right"
+       class="filters mdi mdi-filter-variant position-absolute ml-auto btn btn-primary p-2 m-2"
+       style="right:0;">
+    <a class="cursor-pointer"
+       data-toggle="dropdown"
+       aria-haspopup="true"
+       aria-expanded="false"
+       ngbDropdownToggle>
+      Filters
+    </a>
+
+    <div ngbDropdownMenu
+         class="dropdown-menu dropdown-menu-right bg-light p-3"
+         style="width:60rem;">
+      <equality-filter-courses class="" [courses]="courses"
+                          (filterChanged)="filterChanged($event)"></equality-filter-courses>
+    </div>
+  </div>
+
+  <div class="nav nav-tabs"
+       id="nav-tab"
+       role="tablist">
+    <div class='container-fluid d-flex mt-3 px-3'>
+
+      <a *ngFor="let tab of tabs"
+         class="nav-item nav-link text-secondary"
+         [attr.disabled]="tab.disabled"
+         id="nav-home-tab"
+         data-toggle="tab"
+         [routerLink]="tab.url | lowercase"
+         routerLinkActive="active text-light"
+         role="tab"
+         aria-controls="nav-home"
+         aria-selected="true">{{ tab.title }}</a>
+
+    </div>
+  </div>
+</nav>
+<!--  -->
+
+<!-- </div> -->
+<router-outlet></router-outlet>
+
+<ng-container *ngIf="isEmpty">
+  <div class="container-fluid d-flex justify-content-center">
+    <div class="card">
+      <div class="card-body">
+        <img src="../assets/onboarding/Afnemen.svg"
+             style="width:20rem;" />
+        <div class="text-center p-3">Select a year or course</div>
+      </div>
+    </div>
+  </div>
+</ng-container>

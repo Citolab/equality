@@ -1,0 +1,61 @@
+<ng-container *ngIf="loaded$ | async">
+  <div class='container-fluid p-0 p-sm-3 bg-white'>
+    <div class="row justify-content-between align-items-center">
+      <div class="text-secondary font-italic">Wat zijn de toetstechnische data?</div>
+      <div class="d-flex text-secondary align-items-center font-weight-bold">standaard<span
+              class="ml-1 mdi mdi-24px mdi-numeric-3-circle-outline"></span></div>
+    </div>
+  </div>
+
+
+
+  <div class='container-fluid p-0 p-sm-3'>
+    <div *ngFor="let courseYear of yearsWithAssessments | sort:'year'; let i = index; trackBy:trackByYear ">
+      <div class="d-flex align-items-center"
+           style="height:40px;">
+
+        <h3 style="min-width:140px; width:140px;"
+            class="leerjaar text-nowrap"
+            [class.mt-5]="i > 0">Leerjaar {{ courseYear.year }}</h3>
+        <div *ngIf="i === 0"
+             style="min-width: 0"
+             class="d-flex flex-nowrap">
+
+          <label [class]="'mr-2 cursor-pointer text-truncate rounded-pill text-nowrap mdi' + ' ' + graphType.icon"
+                 ngbButtonLabel
+                 [ngClass]="{
+                  'shadow-sm': graphType.selected
+                  }"
+                 [style.color]="graphType.selected ? '#001240' : '#616b7e'"
+                 [style.background-color]="graphType.selected ? '#ffffff' : 'transparent'"
+                 *ngFor="let graphType of graphTypes; let i = index; trackBy:trackByGraphType">
+            <input type="checkbox"
+                   (click)="selectGraphType(graphType)"
+                   [ngModel]="graphType.selected"
+                   class="d-none"
+                   ngbButton>
+            {{ graphType.title }}
+          </label>
+        </div>
+      </div>
+
+      <ng-container *ngIf="graphTypeSelected('Betrouwbaarheid')">
+        <equality-reliability-chart [isExamencommissie]="userService.isExamencommissie"
+                               [courses]="courses | filter: 'leerjaar': courseYear.year"
+                               [assessments]="courseYear.assessments"></equality-reliability-chart>
+      </ng-container>
+      <ng-container *ngIf="graphTypeSelected('Gemiddeld cijfer')">
+        <equality-average-grade-chart [isExamencommissie]="userService.isExamencommissie"
+                                 [courses]="courses | filter: 'leerjaar': courseYear.year"
+                                 [assessments]="courseYear.assessments"></equality-average-grade-chart>
+      </ng-container>
+      <ng-container *ngIf="graphTypeSelected('Slagingspercentage')">
+        <equality-success-percentage [isExamencommissie]="userService.isExamencommissie"
+                                [courses]="courses | filter: 'leerjaar': courseYear.year"
+                                [assessments]="courseYear.assessments"></equality-success-percentage>
+      </ng-container>
+
+    </div>
+
+  </div>
+</ng-container>

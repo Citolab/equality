@@ -1,0 +1,9 @@
+<form [formGroup]="textForm">
+  <textarea ngbAutofocus
+            [readOnly]="disabled"
+            formControlName="textControl"
+            (change)="changes()"
+            rows="4"
+            class="form-control w-100">
+            </textarea>
+</form>

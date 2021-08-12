@@ -1,0 +1,22 @@
+<div class="chart-container">
+        <canvas baseChart
+                chartType="bar"
+                [datasets]="datasets"
+                [options]="options"
+                [plugins]="chartPlugins"
+                [labels]="labels">
+        </canvas>
+
+        <div class="position-relative d-flex justify-content-around"
+             [style.left.px]='chartArea?.left'
+             [style.width.px]='chartArea?.right - chartArea?.left'>
+                <div *ngFor="let course of courses; trackBy:trackByCourse"
+                     class="eq-parenthover">
+                        <equality-course-link [courseRoute]="course.code"
+                                         [courseName]="course.code | abbrev"
+                                         [readOnly]="!isExamencommissie"
+                                         (clickCourse)="null">
+                        </equality-course-link>
+
+                </div>
+        </div>

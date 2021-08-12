@@ -1,0 +1,56 @@
+<form [formGroup]="questionForm"
+      class="row w-100 align-items-stretch">
+    <div class="col-lg-6 col-12 d-flex align-items-center pl-3">
+        {{ text }}
+    </div>
+    <div class="col-lg-6 col-12 d-flex align-items-center justify-content-end">
+        <div class="btn-group btn-group-toggle mt-2"
+             ngbRadioGroup
+             formControlName="evalResponseType">
+            <label class="small btn btn-outline-dark rounded-0 border-2 mx-1 text-center p-0 d-flex align-items-center justify-content-center"
+                   style="width:3rem; height:3rem;"
+                   [class.text-light]="disabled && responseType === 1"
+                   [class.bg-dark]="disabled && responseType === 1"
+                   ngbButtonLabel>
+                <input ngbButton
+                       [disabled]="disabled"
+                       (click)="t.open()"
+                       [value]="1"
+                       type="radio"> {{ 'OPTION_NO' | translate }}
+            </label>
+            <label class="btn btn-outline-dark rounded-0 border-2 mx-1 p-0 d-flex align-items-center justify-content-center"
+                   style="width:3rem; height:3rem;"
+                   [class.text-light]="disabled && responseType === 2"
+                   [class.bg-dark]="disabled && responseType === 2"
+                   ngbButtonLabel>
+                <input ngbButton
+                       [disabled]="disabled"
+                       (click)="t.open()"
+                       [value]="2"
+                       type="radio"> {{ 'OPTION_YES' | translate }}
+            </label>
+        </div>
+
+
+        <div style="width:200px"
+             class="custom-slider d-flex align-items-center justify-content-center">
+
+            <div #t="ngbTooltip"
+                 trigger="manual"
+                 container="body"
+                 placement="top"
+                 [ngbTooltip]="'QUESTION_HOW_SATISFIED' | translate">
+
+                <!-- (userChangeEnd)="satisfactionLevelChanged($event)"
+                 [value]="satisfactionLevel" -->
+                <ngx-slider [formControl]="satisfactionControl"
+                            style="width:160px;"
+                            [options]="sliderOptions">
+                </ngx-slider>
+            </div>
+        </div>
+
+    </div>
+
+
+</form>

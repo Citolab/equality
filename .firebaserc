@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "equality-opensource"
+  },
+  "targets": {
+    "equality-opensource": {
+      "hosting": {
+        "equality-opensource": [
+          "equality-opensource"
+        ]
+      }
+    }
+  }
+}

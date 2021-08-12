@@ -1,0 +1,33 @@
+.indicator {
+    width: 10px;
+    height: 40px;
+    min-width: 10px;
+    min-height: 40px;
+    max-width: 10px;
+    max-height: 40px;
+    transition: all 2s;
+}
+
+// .indicator-na {
+//     // @include indicator;
+//     background: $secondary;
+//     background-image: repeating-linear-gradient( 45deg, $secondary, $secondary 4px, #ffffff 4px, #ffffff 8px);
+// }
+
+.indicator-no,
+.indicator-yes {
+    // @include indicator;
+    @extend .bg-dark;
+}
+
+.indicator-nofill {
+    // @include indicator;
+    @extend .bg-light;
+}
+
+.indicator-bar {
+    background-image: linear-gradient(0,
+        $primary 10%,
+        transparent 10%,
+        transparent 90%);
+}

@@ -1,0 +1,105 @@
+<ng-container *ngIf="loaded$ | async">
+  <div class='container-fluid p-0 p-sm-3 bg-white'>
+    <div class="row justify-content-between align-items-center">
+      <div class="text-secondary font-italic">Hoe beantwoorden cursusleiders zelf stellingen over de kwaliteitscriteria?
+      </div>
+      <div class="d-flex text-secondary align-items-center font-weight-bold">standaard<span
+              class="ml-1 mdi mdi-24px mdi-numeric-3-circle-outline"></span></div>
+    </div>
+  </div>
+
+  <div class='container-fluid p-0 p-sm-3'>
+    <div *ngFor="let courseYear of yearsWithCourseSelfEvalCountsPerPhase | sort:'year'; let i = index; trackBy:trackByYear">
+      <div class="d-flex align-items-center justify-content-between"
+           style="height:40px;">
+        <div style="min-width:140px; width:140px;"
+             class="text-nowrap">
+          <h3>Year {{ courseYear.year }}</h3>
+        </div>
+        <div class="ml-auto mr-2 text-secondary"
+             *ngIf="i===0"><small>% responded with</small></div>
+        <div class="progress bg-light"
+             *ngIf="i===0"
+             style="width:200px">
+          <div class="progress-bar bg-primary text-dark"
+               role="progressbar"
+               [style.width.%]="33.333333"
+               aria-valuemin="0"
+               aria-valuemax="100">yes</div>
+          <div class="progress-bar bg-secondary"
+               role="progressbar"
+               [style.width.%]="33.333333"
+               aria-valuemin="0"
+               aria-valuemax="100">no</div>
+          <div class="progress-bar progress-bar-striped text-dark"
+               role="progressbar"
+               [style.width.%]="33.333333"
+               aria-valuemin="0"
+               aria-valuemax="100">missing</div>
+        </div>
+
+      </div>
+
+
+      <table class="table table-sm table-borderless w-100">
+        <!-- <caption style="caption-side: top;"></caption> -->
+        <thead>
+          <tr *ngIf="i===0"
+              class="mb-2">
+            <th style="max-width:140px; min-width:140px; width:140px;"></th>
+            <td *ngFor="let category of categories; trackBy:trackByCategory"
+                scope="col">
+              <a class="cursor-pointer border-bottom border-secondary border-1 pb-1 mb-1"
+                 placement="top-left"
+                 [autoClose]="false"
+                 popoverClass="popoverstellingen"
+                 [popoverTitle]="popTitle"
+                 triggers="manual"
+                 #p1="ngbPopover"
+                 [attr.id]="category.title"
+                 (click)="setStellingen(p1, category)"
+                 [ngbPopover]="popContentToets">
+                {{ category.title }}
+              </a>
+
+            </td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let course of courseYear.courses;index as i; trackBy: trackByCourse">
+            <th scope="row"
+                class="eq-parenthover"
+                style="max-width:140px; min-width:140px; width:140px;">
+              <equality-course-link [courseRoute]="course.code"
+                               [courseName]="course.code | abbrev"
+                               [readOnly]="!userService.isExamencommissie"
+                               (clickCourse)="null">
+              </equality-course-link>
+            </th>
+            <td *ngFor="let category of course.categories; trackBy:trackByCategory">
+              <equality-self-evaluate-category [yesCount]="category.yesCount"
+                                          [noCount]="category.noCount"
+                                          [unansweredCount]="category.unansweredCount">
+              </equality-self-evaluate-category>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #popTitle>
+  <p class="py-2 my-0">Stellingen</p>
+</ng-template>
+<ng-template #popContentToets
+             let-stellingen="stellingen">
+  <div class="card h-100 px-1 pt-2">
+    <div class="card-body p-0 pb-3">
+      <p *ngFor="let stelling of stellingen"
+         class="card-text">{{stelling}}</p>
+    </div>
+  </div>
+</ng-template>

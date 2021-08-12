@@ -1,0 +1,35 @@
+<ng-container *ngIf="phaseSelected$ | async">
+    <div *ngFor="let step of selectedPhase?.stepWithResponses; trackBy:trackSelectionsByStage"
+         class="bushalte row align-items-stretch mb-4">
+        <div class="pb-1 text-secondary">{{step.title}}</div>
+
+        <div class="col-12 d-flex bg-white flex-column border-left border-light">
+            <equality-eval-response class="d-flex p-2 w-100 border-top border-light h-100"
+                               *ngFor="let stepResponse of step.selfEvalWithResponses; trackBy:trackSelectionsByClaim"
+                               [disabled]="readonlyMode"
+                               [text]="stepResponse.title"
+                               [phase]="selectedPhase.title"
+                               [responseType]="stepResponse.responseType"
+                               [code]="stepResponse.code"
+                               [class.zoom]="stepResponse.code === selectedEval"
+                               [satisfactionLevel]="stepResponse.satisfactionLevel"
+                               (changed)="evalChanged($event, step.sequenceNumber)">
+            </equality-eval-response>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="p-3 text-dark font-weight-bold  col-12">Onderbouwing bij de stellingen
+        </div>
+        <div class="col-12 d-flex bg-white flex-column border-left border-light p-3">
+            <equality-textarea-form [disabled]="readonlyMode"
+                               [text]="selectedPhase.selfEvalEvidenceText"
+                               (changed)="saveEvidenceText($event)"></equality-textarea-form>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-end mt-3">
+            <equality-fake-save-button *ngIf="!readonlyMode"></equality-fake-save-button>
+        </div>
+    </div>
+</ng-container>

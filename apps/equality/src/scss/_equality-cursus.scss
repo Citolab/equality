@@ -1,0 +1,33 @@
+.eq-parenthover {
+    color: $dark;
+    .eq-hovered {
+        // transition: all 0.1s ease-in;
+        opacity: 0;
+    }
+}
+
+.eq-parenthover:hover {
+    color: $dark;
+    .eq-hovered {
+        opacity: 1;
+    }
+}
+
+
+
+
+
+.eq-parentcolor {
+    .eq-hovercolor {
+        // transition: all 0.1s ease-in;
+        background-color:transparent;
+        border-bottom: 2px solid red !important;
+    }
+}
+
+.eq-parentcolor:hover {
+    .eq-hovercolor {
+        background-color:white;
+        border-bottom: 2px solid $dark;
+    }
+}

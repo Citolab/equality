@@ -1,0 +1,62 @@
+<div class="modal-header bg-light"
+     *ngIf="loaded$ | async">
+  <h4 class="modal-title m-0">Viseon and Visie en policies of our institute.</h4>
+  
+</div>
+<div class="modal-body" *ngIf="loaded$ | async">
+
+    <span *ngIf="visiondocs.length === 0" class="text-secondary font-italic">No documents uploaded yet</span>
+    <div *ngFor="let visiondocsFile of visiondocs" 
+         class="d-flex align-items-center justify-content-start mt-2">
+
+      <equality-filetype-icon class="mr-2"
+                         [filename]="visiondocsFile.filename">
+      </equality-filetype-icon>
+      <a fileSaver
+      [method]="'GET'"
+      [fileName]="visiondocsFile.filename"
+      [url]="visiondocsFile.filepath"
+      (change)="upload($event)"
+      [url]="visiondocsFile.url"
+      class="text-nowrap text-secondary text-truncate cursor-pointer">{{ visiondocsFile.filename }}</a>
+
+      <button class="mdi mdi-trash-can-outline btn btn-danger ml-auto"
+      *ngIf="!readonlyMode"
+      (click)="removeFile(visiondocsFile.id)"
+      >Verwijder</button>
+
+        <button class="mdi mdi-download btn btn-primary ml-auto"
+                fileSaver
+                [method]="'GET'"
+                *ngIf="readonlyMode"
+                [fileName]="visiondocsFile.filename"
+                [url]="visiondocsFile.filepath"
+                (change)="upload($event)"
+                [url]="visiondocsFile.url"
+                >Download</button>
+
+
+    </div>
+    <div class="d-flex mt-3">
+        <button *ngIf="!readonlyMode"
+                [disabled]="isProcessing"
+                class="btn btn-primary d-flex justify-content-center"
+                (click)="fileUpload.click();">
+          <span [class.d-none]="!isProcessing"
+                class="mdi mdi-loading mdi-spin mr-2"></span>
+          <span [class.d-none]="isProcessing"
+                class="mdi mdi-plus mr-2"></span>
+  
+          Upload</button>
+        <input #fileUpload
+               [hidden]="true"
+               type="file"
+               multiple
+               (change)="upload($event)" />
+      </div>
+  </div>
+<div class="modal-footer">
+  <button type="button"
+          class="btn btn-secondary"
+          (click)="activeModal.close('Close click')">Close</button>
+</div>
